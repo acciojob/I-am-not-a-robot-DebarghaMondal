@@ -1,52 +1,62 @@
 //your code here
-document.addEventListener("DOMContentLoaded", ()=>{
-const imageContainer = document.getElementById("image-container");
-	const resetButton = document.getElementById("reset");
-	const verifyButton = document.getElementById("verify");
-	const para = document.getElementById("para");
+document.addEventListener("DOMContentLoaded", () => {
+    const imageContainer = document.getElementById("image-container");
+    const resetButton = document.getElementById("reset");
+    const verifyButton = document.getElementById("verify");
+    const para = document.getElementById("para");
 
-	let selectedImages = [];
-	let clickedCount = 0;
+    let selectedImages = [];
+    let clickedCount = 0;
 
-	function getRandomInt(min, max){
-		min = Math.ceil(min);
-		max = Math.floor(max);
-		return Math.floor(Math.random() * (max - min + 1)) + min;
-	}
+    // Function to generate a random integer between min (inclusive) and max (inclusive)
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
-	function shuffleArray(array){
-		for(let i = array.length - 1; i > 0; i--){
-			const j = getRanomInt(0, 1);
-			[array[i], array[j]] = [array[j], array[i]];
-		}
-	}
-function createImages() {
-	const imageClasses = ["img1", "img2", "img3", "img4", "img5"];
+    // Function to shuffle an array using Fisher-Yates algorithm
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = getRandomInt(0, i);
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
 
-	imageClasses.push(imageClasses[getRandomInt(0, 4)]);
+    // Function to create and render images
+    function createImages() {
+        const imageClasses = ["img1", "img2", "img3", "img4", "img5"];
 
-	shuffleArray(imageClasses);
+        // Duplicate one image class to make it identical
+        imageClasses.push(imageClasses[getRandomInt(0, 4)]);
 
-	imageClasses.forEach((imgClass) =>{
-		const img = document.createElement("img");
-		img.className = imgClass;
-		img.src = `https://source-url-for-images.com/${imgClass}.jpg`;
+        // Shuffle the array to randomize image placement
+        shuffleArray(imageClasses);
 
-		img.addEventListner("click", () =>{
-			if (selectedImages.length < 2 && !selectedImages.includes(imgClass)) {
-				selectedImages.push(imgClass);
-				img.classList.add("selected");
-				clickedcount++;
-			}
-			if (clickedcount === 2) {
-				verifyButton.style.display = "block"
-			}
-		});
-		imageContainer.appendChild(img);
-	});
-}
+        imageClasses.forEach((imgClass) => {
+            const img = document.createElement("img");
+            img.className = imgClass;
+            img.src = `https://source-url-for-images.com/${imgClass}.jpg`;
 
-	function resetGame() {
+            // Add click event listener to each image
+            img.addEventListener("click", () => {
+                if (selectedImages.length < 2 && !selectedImages.includes(imgClass)) {
+                    selectedImages.push(imgClass);
+                    img.classList.add("selected");
+                    clickedCount++;
+                }
+
+                if (clickedCount === 2) {
+                    verifyButton.style.display = "block";
+                }
+            });
+
+            imageContainer.appendChild(img);
+        });
+    }
+
+    // Function to reset the game state
+    function resetGame() {
         selectedImages = [];
         clickedCount = 0;
 
@@ -81,15 +91,3 @@ function createImages() {
     // Initial setup: Create and render images
     createImages();
 });
-	
-
-
-
-
-
-
-
-
-	
-	
-})
